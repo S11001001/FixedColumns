@@ -26,7 +26,7 @@
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-package com.clarifi.datatablesstatic.project
+package com.clarifi.datatablesfixedcolumnsstatic.project
 
 import scala.collection.JavaConverters._
 

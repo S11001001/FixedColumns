@@ -28,11 +28,11 @@
 
 parallelExecution := true
 
-name := "datatables-colreorderwithresize-static"
+name := "datatables-fixedcolumns-static"
 
 organization := "com.clarifi"
 
-version := "1.0.8.4"
+version := "8142a3b"
 
 licenses := Seq("GNU General Public License (GPL), Version 2"
                   -> url("http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"),
@@ -60,7 +60,7 @@ excludeFilter in (Compile, unmanagedResources) <<=
       Seq("unit_testing/", "src/") exists (rel startsWith)})
 }
 
-classDirectory in Compile ~= (_ / "com" / "clarifi" / "datatablescolreorderwithresizestatic")
+classDirectory in Compile ~= (_ / "com" / "clarifi" / "datatablesfixedcolumnsstatic")
 
 // Remove precisely as many path components as we added in
 // `classDirectory in Compile`, for the jar output.
@@ -71,9 +71,9 @@ products in Compile <<= (classDirectory in Compile, products in Compile) map {
 
 resourceGenerators in Compile <+= (streams, resourceManaged in Compile,
                                    resourceDirectory in Compile) map {(s, tgt, sd) =>
-  val ifile = sd / "js" / "ColReorder.js"
-  val ofile = tgt / "js" / "ColReorder.min.js"
-  import com.clarifi.datatablesstatic.project._
+  val ifile = sd / "js" / "dataTables.fixedColumns.js"
+  val ofile = tgt / "js" / "dataTables.fixedColumns.min.js"
+  import com.clarifi.datatablesfixedcolumnsstatic.project._
   Closure.compile(Closure.compiler(s), ifile) match {
     case Left(errs) => throw new RuntimeException(errs.size + " errors")
     case Right(compiled) => IO.write(ofile, compiled, append = false)
