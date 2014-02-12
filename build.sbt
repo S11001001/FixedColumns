@@ -32,12 +32,9 @@ name := "datatables-fixedcolumns-static"
 
 organization := "com.clarifi"
 
-version := "8142a3b"
+version := "3.0.0"
 
-licenses := Seq("GNU General Public License (GPL), Version 2"
-                  -> url("http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"),
-                "BSD 3-Clause"
-                  -> url("http://datatables.net/license_bsd"))
+licenses := Seq("MIT" -> url("http://datatables.net/license_mit"))
 
 homepage := Some(url("http://www.datatables.net"))
 
@@ -49,16 +46,8 @@ sourcesInBase := false
 
 crossVersion := CrossVersion.Disabled // don't add _2.9.2 to artifact name
 
-resourceDirectory in Compile <<= baseDirectory(_ / "media")
-
-excludeFilter in (Compile, unmanagedResources) <<=
-  (resourceDirectory in Compile, excludeFilter in (Compile, unmanagedResources)) {
-    (resd, ef) =>
-    val rbase = resd.toURI
-    ef || new SimpleFileFilter({s =>
-      val rel = (rbase relativize s.toURI getPath)
-      Seq("unit_testing/", "src/") exists (rel startsWith)})
-}
+unmanagedResourceDirectories in Compile <<= baseDirectory(bd =>
+  Seq(bd / "js", bd / "css"))
 
 classDirectory in Compile ~= (_ / "com" / "clarifi" / "datatablesfixedcolumnsstatic")
 
@@ -70,7 +59,7 @@ products in Compile <<= (classDirectory in Compile, products in Compile) map {
 }
 
 resourceGenerators in Compile <+= (streams, resourceManaged in Compile,
-                                   resourceDirectory in Compile) map {(s, tgt, sd) =>
+                                   baseDirectory) map {(s, tgt, sd) =>
   val ifile = sd / "js" / "dataTables.fixedColumns.js"
   val ofile = tgt / "js" / "dataTables.fixedColumns.min.js"
   import com.clarifi.datatablesfixedcolumnsstatic.project._
