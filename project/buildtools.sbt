@@ -1,1 +1,1 @@
-libraryDependencies += "com.google.javascript" % "closure-compiler" % "v20130823"
+libraryDependencies += "com.google.javascript" % "closure-compiler" % "v20131014"
