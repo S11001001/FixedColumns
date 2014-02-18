@@ -32,7 +32,7 @@ name := "datatables-fixedcolumns-static"
 
 organization := "com.clarifi"
 
-version := "3.0.0"
+version := "3.0.0.1"
 
 licenses := Seq("MIT" -> url("http://datatables.net/license_mit"))
 
@@ -46,8 +46,14 @@ sourcesInBase := false
 
 crossVersion := CrossVersion.Disabled // don't add _2.9.2 to artifact name
 
-unmanagedResourceDirectories in Compile <<= baseDirectory(bd =>
-  Seq(bd / "js", bd / "css"))
+resourceDirectory in Compile := baseDirectory.value
+
+includeFilter in (Compile, unmanagedResources) := {
+  val rbase = (resourceDirectory in Compile).value.toURI
+  new SimpleFileFilter({s =>
+    val rel = (rbase relativize s.toURI getPath)
+    Seq("js/", "css/").exists(rel startsWith)})
+}
 
 classDirectory in Compile ~= (_ / "com" / "clarifi" / "datatablesfixedcolumnsstatic")
 
